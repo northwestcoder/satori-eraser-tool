@@ -1,8 +1,6 @@
 import psycopg2
 
-def search_for_email(cockroachdb_username, cockroachdb_password, cockroachdb_cluster, host, port, database, location, user, password, email_to_find, colname):
-
-	str_sql = "SELECT * from {} where {} = '{}';".format(location, colname, email_to_find)
+def search_for_email(host, port, database, cluster, username, password, sql_query):
 
 	try:
 
@@ -19,13 +17,13 @@ def search_for_email(cockroachdb_username, cockroachdb_password, cockroachdb_clu
 
 		conn = psycopg2.connect(DATABASE_URL)		
 		cur = conn.cursor()
-		cur.execute(str_sql)
+		cur.execute(sql_query)
 		rows = cur.fetchall()
 		for row in rows:
 			result += str(row) + '</br>'
-		return (result, str_sql)
+		return (result, sql_query)
 	except Exception as err:
 		print(str(err))
-		return (str(err), str_sql)
+		return (str(err), sql_query)
 
 

@@ -128,6 +128,9 @@ def async_get_datastores():
                                 query_location = schema + '.' + table
                                 full_location = satori_hostname + '::' + dbname + '.' + schema + '.' + table + '.' + column_name
 
+
+                            sql_query = "SELECT * from {} where {} = '{}';".format(query_location, column_name, search_string)
+
                             # BEGIN MAIN DB CLIENT WORK
 
                             if db_type == 'POSTGRESQL' and satori_username != '':
@@ -135,11 +138,9 @@ def async_get_datastores():
                                     satori_hostname, 
                                     PORT_POSTGRES, 
                                     dbname, 
-                                    query_location, 
                                     satori_username, 
                                     satori_password, 
-                                    search_string, 
-                                    column_name)
+                                    sql_query)
 
                                 remediation_response = remediation.build_remediation(
                                     query_location, 
@@ -149,18 +150,14 @@ def async_get_datastores():
 
                                 query_items[satori_hostname + "::" + dbname].append(search_results[1])
 
-
-
                             if db_type == 'MYSQL' and satori_username != '':
                                 search_results = mysql.search_for_email(
                                     satori_hostname, 
                                     PORT_MYSQL, 
                                     dbname, 
-                                    query_location, 
                                     satori_username, 
                                     satori_password, 
-                                    search_string, 
-                                    column_name)
+                                    sql_query)
 
                                 remediation_response = remediation.build_remediation(
                                     query_location, 
@@ -175,11 +172,9 @@ def async_get_datastores():
                                     satori_hostname, 
                                     PORT_REDSHIFT, 
                                     dbname, 
-                                    query_location, 
                                     satori_username, 
                                     satori_password, 
-                                    search_string,
-                                    column_name)
+                                    sql_query)
 
                                 remediation_response = remediation.build_remediation(
                                     query_location, 
@@ -193,11 +188,9 @@ def async_get_datastores():
                                 search_results = mssql.search_for_email(
                                     satori_hostname,
                                     dbname,
-                                    query_location,
                                     satori_username,
                                     satori_password,
-                                    search_string,
-                                    column_name)
+                                    sql_query)
                                 
                                 remediation_response = remediation.build_remediation(
                                     query_location, 
@@ -213,11 +206,9 @@ def async_get_datastores():
                                     athena_region,
                                     satori_hostname,
                                     dbname,
-                                    query_location,
                                     satori_username,
                                     satori_password,
-                                    search_string,
-                                    column_name)
+                                    sql_query)
                                 
                                 remediation_response = remediation.build_remediation(
                                     query_location, 
@@ -229,17 +220,13 @@ def async_get_datastores():
 
                             if db_type == 'COCKROACH_DB' and cockroachdb_username != '':
                                 search_results = cockroachdb.search_for_email(
-                                    cockroachdb_username, 
-                                    cockroachdb_password, 
-                                    cockroachdb_cluster,
                                     satori_hostname,
                                     PORT_COCKROACH,
                                     dbname,
-                                    query_location,
-                                    satori_username,
-                                    satori_password,
-                                    search_string,
-                                    column_name)
+                                    cockroachdb_cluster,
+                                    cockroachdb_username, 
+                                    cockroachdb_password, 
+                                    sql_query)
                                 
                                 remediation_response = remediation.build_remediation(
                                     query_location, 
@@ -253,13 +240,10 @@ def async_get_datastores():
                                 search_results = snowflake.search_for_email(
                                     satori_hostname,
                                     dbname,
-                                    schema,
-                                    query_location,
-                                    search_string,
-                                    column_name,
                                     snowflake_account,
                                     snowflake_username,
-                                    snowflake_password
+                                    snowflake_password,
+                                    sql_query
                                     )
 
                                 remediation_response = remediation.build_remediation(

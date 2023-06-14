@@ -1,9 +1,7 @@
 import snowflake.connector
 
-def search_for_email(host, database, schema, location, email_to_find, colname, snowflake_account, snowflake_username, snowflake_password):
+def search_for_email(host, database, snowflake_account, snowflake_username, snowflake_password, sql_query):
 	
-	str_sql = "SELECT * from " + location + " where " + colname + " = '" + email_to_find + "';"
-
 	try:
 		result = ''
 
@@ -12,16 +10,15 @@ def search_for_email(host, database, schema, location, email_to_find, colname, s
 			password= snowflake_password,
 			user=snowflake_username,
 			host=host,
-			database=database,
-			schema=schema
+			database=database
 			)
 		
 		cs = ctx.cursor()			
-		cs.execute(str_sql)
+		cs.execute(sql_query)
 		for row in cs:
 			result += str(row) + '</br>'
-		return (result, str_sql)
+		return (result, sql_query)
 
 	except Exception as err:
 		print(str(err))
-		return (str(err), str_sql)
+		return (str(err), sql_query)

@@ -5,9 +5,7 @@ import time
 
 MAX_RESULTS = 100
 
-def search_for_email(athena_results, athena_region, host, database, location, user, password, email_to_find, colname):
-
-	query = "SELECT * FROM {} where {} = '{}' LIMIT {}".format(location, colname, email_to_find, MAX_RESULTS)
+def search_for_email(athena_results, athena_region, host, database, user, password, sql_query):
 
 	try:
 
@@ -23,7 +21,7 @@ def search_for_email(athena_results, athena_region, host, database, location, us
 		)
 
 		response = client.start_query_execution(
-		QueryString=query,
+		QueryString=sql_query,
 		QueryExecutionContext={
 			'Database': database
 		},
@@ -55,8 +53,8 @@ def search_for_email(athena_results, athena_region, host, database, location, us
 						rows.append(row['Data'])        
 			time.sleep(1)
 		
-		return (str(rows), query)
+		return (str(rows), sql_query)
 	except Exception as err:
 		print(str(err))
-		return (str(err),query)
+		return (str(err),sql_query)
 

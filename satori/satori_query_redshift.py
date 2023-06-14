@@ -1,8 +1,7 @@
 import psycopg2
 
-def search_for_email(host, port, database, location, user, password, email_to_find, colname):
+def search_for_email(host, port, database, user, password, sql_query):
 
-	str_sql = "SELECT * from {} where {} = '{}';".format(location, colname, email_to_find)
 	result = ''
 
 	try:
@@ -11,16 +10,16 @@ def search_for_email(host, port, database, location, user, password, email_to_fi
 			)
 	except Exception as err:
 		print(err)
-		return (str(err), str_sql)
+		return (str(err), sql_query)
 	else:
 		cur = connector.cursor()
 
 	try:
-		cur.execute(str_sql)
+		cur.execute(sql_query)
 	except Exception as err:
 		print(err)
 		connector.rollback()
-		return (str(err), str_sql)
+		return (str(err), sql_query)
 	
 	try:
 		rows = cur.fetchall()
@@ -29,7 +28,7 @@ def search_for_email(host, port, database, location, user, password, email_to_fi
 	except Exception as err:
 		print(err)
 		connector.rollback()
-		return (str(err), str_sql)
+		return (str(err), sql_query)
 	else:
 		connector.commit()
-		return (result, str_sql)
+		return (result, sql_query)
