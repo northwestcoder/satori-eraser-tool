@@ -19,10 +19,13 @@ _A command line driven experience to search across all Satori datastores for any
 - At a command prompt, download this repo, navigate to the new repo directory and then
 ```pip install -r requirements.txt```
 - Fill out values in satori/satori.py
-- If not using Snowflake, Athena, or CockroachDB, you can leave those lines alone
-- Satori [username and temp credentials](https://satoricyber.com/docs/data%20portal/#data-store-temporary-credentials) are required for Athena, Postgres, MySQL, Redshift and MSSQL. You can also place original database username and password into these values.
+	- This solution requires a [Satori API service ID and Key](https://app.satoricyber.com/docs/api).
+	- If you are not using Snowflake, Athena, or CockroachDB, you can leave these lines alone.
+	- Satori [username and temp credentials](https://satoricyber.com/docs/data%20portal/#data-store-temporary-credentials) can be used for Athena, Postgres, MySQL, Redshift and MSSQL.
+	- Or, you can use original database username and password for these variables. 
+	- Snowflake and CockroachDB will require database username and password.
 
-_We strongly recommend using a virtual python environment!_
+_Due to several python libraries installed for various databases, we strongly recommend using a virtual python environment! E.g. "brew install pyenv" on MacOS._
 
 
 ### Usage
@@ -39,7 +42,7 @@ The premise is:
 
 To start the tool, the syntax is like:
 
-```%>python app.py TAGNAME SEARCH_STRING ```
+```python app.py TAGNAME SEARCH_STRING ```
 
 Where:
 
@@ -49,22 +52,27 @@ Where:
 The results are divided into two sections:
 
 1. We show each location for TAG, and any results from the database for that TAG where value = SEARCH_STRING.
-2. We then list select statements for each location for TAG, this is for a data engineer to perform additional research or exploration.
+	- Note: This tool makes zero attempt at pretty-printing results retrieved from a database query!
+2. We then list SQL select statements for each location for TAG.
+	- This is for a data engineer to perform additional research or exploration.
 
 ##### Examples
 
 ```
-%>python app.py SSN 322-87-9857
-%>python app.py EMAIL svega674@lewisramirezandstephenson.biz
-%>python app.py ALLERGIES "J30.9 Allergic rhinitis  unspecified"
-%>python app.py STATE OR
-%>python app.py CITY Comanche 
+python app.py SSN 322-87-9857
+python app.py EMAIL svega674@lewisramirezandstephenson.biz
+python app.py ALLERGIES "J30.9 Allergic rhinitis  unspecified"
+python app.py STATE "Oregon"
+python app.py CITY "San Francisco" 
 ```
 
 You can also use [Satori Custom Inventory](https://satoricyber.com/docs/inventory/#custom-data-classification), but you will need to know its internal ID (available in the URL when looking at your custom inventory classifier), e.g. if you have a custom tag for emails, you could search like:
 
 ```
-%>python app.py eec10645-6358-48eb-a5e3-6af917600b0a svega674@lewisramirezandstephenson.biz
+python app.py eec10645-6358-48eb-a5e3-6af917600b0a svega674@lewisramirezandstephenson.biz
 ```
 
+Sample output:
+
+![Example](example.png)
 

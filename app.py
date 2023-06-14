@@ -81,7 +81,7 @@ def async_get_datastores():
 
         socketio.emit('SatoriResults', 
             {
-            'SearchResults': '<b>' + ds_name + '</b></br></br>'
+            'SearchResults': '<b>' + ds_name + '</b></br>'
             },
             namespace='/test'
             )
@@ -281,7 +281,7 @@ def async_get_datastores():
 
                         socketio.emit('SatoriResults', 
                                 {
-                                'SearchResults': '<i>' + full_location + '</i></br></br><div class="resultsindent"><b>Results:</b></br></br>' + search_results[0] + '</br></br><b>Remediation:</b></br></br>' + remediation_response + '</div></br></br>'
+                                'SearchResults': '<i>' + full_location + '</i></br><div class="resultsindent"><b>Results:</b></br>' + search_results[0] + '</br></br><b>Remediation:</b></br>' + remediation_response + '</div></br>'
                                 },
                                 namespace='/test'
                                 )
@@ -290,7 +290,7 @@ def async_get_datastores():
 
     queries_formatted = ''
     for location, queries in query_items.items():
-        queries_formatted += '</br><b>' + location.split("::")[0] + '</b></br></br>'
+        queries_formatted += '</br><b>' + location.split("::")[0] + '</b></br>'
         for item in queries:
             queries_formatted += '<div class="resultsindent">' + str(item) + '</div>'
 
@@ -303,7 +303,7 @@ def async_get_datastores():
 
     socketio.emit('Completion', 
     {
-    'Complete': "Finished querying all Satori datastore locations"
+    'Complete': "Finished querying all Satori datastore <b>" + satori_tag + "</b> locations for value <b>" + search_string + "</b>"
     },
     namespace='/test'
     )
