@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+    <script src="../static/js/application.js"></script>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+   <style>
+
+        .table {
+        table-layout: fixed;
+        width: 1100px;
+        }
+        nav a {
+            color: #3123DF;
+            font-size: 3em;
+            text-decoration: none;
+        }
+
+        .resultsindent {
+            font-size: x-small;
+            padding: 25px;
+            text-align: left;
+            vertical-align: top;
+            font-family: Arial, Helvetica, sans-serif;
+            word-wrap: break-word;
+        }
+
+        .tableleft {
+            padding: 25px;
+            width: 120px;
+            text-align: right;
+            vertical-align: top;
+            font-family: Arial, Helvetica, sans-serif;
+            word-wrap: break-word;
+        }
+
+        .tableright, .container {
+            padding: 25px;
+            width: 980;
+            text-align: left;
+            vertical-align: top;
+            font-family: Arial, Helvetica, sans-serif; 
+            word-wrap: break-word;             
+        }
+
+        h1, h2, h3, h5 {
+            padding: 5px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+    </style>
+
+  <title>Satori GDPR Search Tool</title>
+</head>
+<body>
+
+  <table width="1100">
+
+    <tr>
+      <td class="tableleft">
+        &nbsp;
+      </td>
+      <td class="tableright">
+
+        <div align="left"> <img width="200" alt="logo" src="https://satoricyber.com/wp-content/uploads/LogoDark2.svg" />
+        </br>
+        </br>
+          <h2>Satori GDPR Opt-Out Tool</h2>
+        </br>
+
+          <img width="400" alt="eulogo" src="https://gdpr.eu/wp-content/themes/gdpr/images/logo-gdpr-eu.svg" /></br></br>
+        </div>
+
+        </br>
+
+        <font size="-1"><i>"The data subject shall have the right to obtain from the controller the erasure of personal</br>
+        data concerning him or her without undue delay and the controller shall</br>
+      have the obligation to erase personal data without undue delay..."</i></br></br></font>
+          <i>Citations:</i></br>
+          <ul>
+            <li><font size="-1">Article 17: <a href="https://gdpr.eu/article-17-right-to-be-forgotten/" target="_blank">https://gdpr.eu/article-17-right-to-be-forgotten</a></font></li>
+            <li><font size="-1">Recitals: <a href="https://gdpr.eu/Recital-65-Right-of-rectification-and-erasure" target="_blank">https://gdpr.eu/Recital-65-Right-of-rectification-and-erasure</a></font></li>
+          </ul>
+</br></br>
+
+<a href="#Datastores">Datastore Locations</a>
+</br>
+<a href="#Queries">Queries</a>
+</br>
+
+<hr size=1 />
+      </td>
+    </tr>
+
+
+
+
+    <tr>
+      <td class="tableleft">&nbsp;</td>
+      <td class="tableright">
+
+
+    <div class="container" id="content">
+        <div class="row">
+            <div id="completion"></div>
+        </div>
+    </div>
+
+
+
+    <div class="container" id="content">
+        <div class="row">
+            <h3 id="Datastores">Datastore Locations</h3>
+            <div id="datastore_name"></div>
+        </div>
+    </div>
+
+
+    <div class="container" id="content">
+        <div class="row">
+            <h3 id="Queries">Queries</h3>
+            <div id="queries"></div>
+        </div>
+    </div>
+
+    </td>
+    </tr>
+
+</table>
+
+</body>
+</html>

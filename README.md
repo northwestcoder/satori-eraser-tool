@@ -2,6 +2,8 @@
 
 <img src="https://satoricyber.com/wp-content/uploads/LogoDark2.svg" />
 
+_A command line driven experience to search across all Satori datastores for any TAG with any SEARCH_STRING_
+
 ### Supported Database Types
 
 - PostgreSQL (with Satori credentials)
