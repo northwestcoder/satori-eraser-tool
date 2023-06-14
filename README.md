@@ -1,8 +1,8 @@
-# Satori Opt-Out Documentation
+# Satori Opt-Out CLI and Report Builder
 
 <img src="https://satoricyber.com/wp-content/uploads/LogoDark2.svg" />
 
-_A command line driven experience to search across all Satori datastores for any TAG with any SEARCH_STRING_
+_A command line driven experience to search across all Satori datastores for any TAG with any SEARCH_STRING and generate a web report with the results_
 
 ### Supported Database Types
 
