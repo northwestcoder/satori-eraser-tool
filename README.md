@@ -1,4 +1,4 @@
-# Satori Opt-Out CLI and Report Builder
+# Satori GDPR/CCPA Opt-Out CLI and Report Builder
 
 <img src="https://satoricyber.com/wp-content/uploads/LogoDark2.svg" />
 
