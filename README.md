@@ -2,7 +2,7 @@
 
 <img src="https://satoricyber.com/wp-content/uploads/LogoDark2.svg" />
 
-_A command-line -driven experience to search across all Satori datastores for any TAG with any SEARCH_STRING and generate a web report with the results_
+_A command-line -driven experience to search across all Satori datastores for any Satori TAG with any SEARCH_STRING and generate a web report with the results_
 
 
 
@@ -77,7 +77,7 @@ The results are divided into two sections:
 2. We then list SQL select statements for each location for TAG.
 	- This is for a data engineer to perform additional research or exploration.
 
-##### Examples
+### Examples
 
 ```
 python app.py SSN 322-87-9857
@@ -92,3 +92,16 @@ You can also use [Satori Custom Inventory](https://satoricyber.com/docs/inventor
 ```
 python app.py eec10645-6358-48eb-a5e3-6af917600b0a svega674@lewisramirezandstephenson.biz
 ```
+
+### More info on the DB client libraries
+
+This repo assumes that you are using _all_ of the various databases that are supported - but in reality this is probably unlikely.. :) 
+
+If you do not want to use a particular database, or, you only use one of the databases supported, then we recommend you find this comment in ```app.py```:
+```
+# BEGIN MAIN DB CLIENT WORK
+```
+
+And then
+- simply remove the IF statements for databases that you do not need.
+- remove references to the python libraries for these databases.
