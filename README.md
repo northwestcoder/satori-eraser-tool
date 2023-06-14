@@ -4,6 +4,22 @@
 
 _A command-line -driven experience to search across all Satori datastores for any TAG with any SEARCH_STRING and generate a web report with the results_
 
+
+
+### How and Why Does It Work?
+
+If you combine the following concepts, the result is a tool for querying multiple locations across multiple datastores, searching for a specific value for a Satori tag.
+
+1. Satori has all of your [Datastores](https://satoricyber.com/docs/datastores/data-stores-overview/) defined.
+2. Satori provides a temp [username and password](https://satoricyber.com/docs/data%20portal/#data-store-temporary-credentials) for most datastores (except Snowflake and CockroachDB for which we provide input fields if needed).
+3. Satori has all of your sensitive columns tagged using [Satori Data Inventory](https://satoricyber.com/docs/inventory/) features.
+4. Satori includes a [Rest API](https://app.satoricyber.com/docs/api) for finding and operating upon datastores and locations. You need a service account and service key to use the Rest API.
+
+Therefore, this tool can iterate through the entire corpus of your Satori account and query each and every location for a desired Satori field type aka tag aka classifier, e.g. 
+```
+select * from HOST.DB.SCHEMA.LOCATION where COL = 'janedoe@somedomain.com'
+```
+
 ### Supported Database Types
 
 - PostgreSQL

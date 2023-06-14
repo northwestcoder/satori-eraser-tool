@@ -1,4 +1,3 @@
-# Start with a basic flask app webpage.
 import sys
 from flask_socketio import SocketIO, emit
 from flask import Flask, render_template
@@ -19,7 +18,6 @@ from satori import satori_query_athena as athena
 from satori import satori_query_cockroach as cockroachdb
 from satori import satori_query_redshift as redshift
 from satori import satori_query_snowflake as snowflake
-
 
 # change your ports as needed. Snowflake and Athena do not require ports
 PORT_POSTGRES = "5432"
@@ -58,7 +56,6 @@ athena_region = satori.athena_region
 def async_get_datastores():
 
     query_items = defaultdict(list)
-
     satori_token = satori_common.satori_auth(satori_serviceaccount_id, satori_serviceaccount_key, apihost)
 
     auth_headers = {
@@ -80,17 +77,13 @@ def async_get_datastores():
         db_type = ds_entry['type']
 
         socketio.emit('SatoriResults', 
-            {
-            'SearchResults': '<b>' + ds_name + '</b></br>'
-            },
-            namespace='/test'
-            )
+            {'SearchResults': '<b>' + ds_name + '</b></br>'},
+            namespace='/test')
 
         found_locations = locations.get_locations_by_datastore(auth_headers, 
                                                                apihost, 
                                                                satori_account_id, 
                                                                datastore_id)
-
 
         print("\nSearching " + str(found_locations[0]) + " locations for datastore " + satori_hostname + " (" + db_type + ")")
         
@@ -104,7 +97,6 @@ def async_get_datastores():
             if tags is not None:
                 for tag_item in tags:
                     if tag_item['name'] == satori_tag:
-
 
                         # for each location of type EMAIL, we build the following vars:
                         # dbname, table, column_name, schema, query-able location, full_location
@@ -129,141 +121,134 @@ def async_get_datastores():
                                 full_location = satori_hostname + '::' + dbname + '.' + schema + '.' + table + '.' + column_name
 
 
-                            sql_query = "SELECT * from {} where {} = '{}';".format(query_location, column_name, search_string)
+                        sql_query = "SELECT * from {} where {} = '{}';".format(query_location, column_name, search_string)
 
-                            # BEGIN MAIN DB CLIENT WORK
+                        # BEGIN MAIN DB CLIENT WORK
 
-                            if db_type == 'POSTGRESQL' and satori_username != '':
-                                search_results = postgres.search_for_email(
-                                    satori_hostname, 
-                                    PORT_POSTGRES, 
-                                    dbname, 
-                                    satori_username, 
-                                    satori_password, 
-                                    sql_query)
+                        if db_type == 'POSTGRESQL' and satori_username != '':
+                            search_results = postgres.search_for_email(
+                                satori_hostname, 
+                                PORT_POSTGRES, 
+                                dbname, 
+                                satori_username, 
+                                satori_password, 
+                                sql_query)
 
-                                remediation_response = remediation.build_remediation(
-                                    query_location, 
-                                    column_name, 
-                                    search_string
-                                    )
-
-                                query_items[satori_hostname + "::" + dbname].append(search_results[1])
-
-                            if db_type == 'MYSQL' and satori_username != '':
-                                search_results = mysql.search_for_email(
-                                    satori_hostname, 
-                                    PORT_MYSQL, 
-                                    dbname, 
-                                    satori_username, 
-                                    satori_password, 
-                                    sql_query)
-
-                                remediation_response = remediation.build_remediation(
-                                    query_location, 
-                                    column_name, 
-                                    search_string
-                                    )
-
-                                query_items[satori_hostname + "::" + dbname].append(search_results[1])
-                            
-                            if db_type == 'REDSHIFT' and satori_username != '':
-                                search_results = redshift.search_for_email(
-                                    satori_hostname, 
-                                    PORT_REDSHIFT, 
-                                    dbname, 
-                                    satori_username, 
-                                    satori_password, 
-                                    sql_query)
-
-                                remediation_response = remediation.build_remediation(
-                                    query_location, 
-                                    column_name, 
-                                    search_string
-                                    )
-
-                                query_items[satori_hostname + "::" + dbname].append(search_results[1])
-                            
-                            if db_type == 'MSSQL' and satori_username != '':
-                                search_results = mssql.search_for_email(
-                                    satori_hostname,
-                                    dbname,
-                                    satori_username,
-                                    satori_password,
-                                    sql_query)
-                                
-                                remediation_response = remediation.build_remediation(
-                                    query_location, 
-                                    column_name, 
-                                    search_string
-                                    )
-                        
-                                query_items[satori_hostname + "::" + dbname].append(search_results[1])
-
-                            if db_type == 'ATHENA' and athena_results != '':
-                                search_results = athena.search_for_email(
-                                    athena_results,
-                                    athena_region,
-                                    satori_hostname,
-                                    dbname,
-                                    satori_username,
-                                    satori_password,
-                                    sql_query)
-                                
-                                remediation_response = remediation.build_remediation(
-                                    query_location, 
-                                    column_name, 
-                                    search_string
-                                    )
-      
-                                query_items[satori_hostname + "::" + dbname].append(search_results[1])
-
-                            if db_type == 'COCKROACH_DB' and cockroachdb_username != '':
-                                search_results = cockroachdb.search_for_email(
-                                    satori_hostname,
-                                    PORT_COCKROACH,
-                                    dbname,
-                                    cockroachdb_cluster,
-                                    cockroachdb_username, 
-                                    cockroachdb_password, 
-                                    sql_query)
-                                
-                                remediation_response = remediation.build_remediation(
-                                    query_location, 
-                                    column_name, 
-                                    search_string
-                                    )
-     
-                                query_items[satori_hostname + "::" + dbname].append(search_results[1])
-
-                            if db_type == 'SNOWFLAKE' and snowflake_username != '':
-                                search_results = snowflake.search_for_email(
-                                    satori_hostname,
-                                    dbname,
-                                    snowflake_account,
-                                    snowflake_username,
-                                    snowflake_password,
-                                    sql_query
-                                    )
-
-                                remediation_response = remediation.build_remediation(
-                                    query_location, 
-                                    column_name, 
-                                    search_string
-                                    )
-
-                                query_items[satori_hostname + "::" + dbname].append(search_results[1])
-
-
-
-                        socketio.emit('SatoriResults', 
-                                {
-                                'SearchResults': '<i>' + full_location + '</i></br><div class="resultsindent"><b>Results:</b></br>' + search_results[0] + '</br></br><b>Remediation:</b></br>' + remediation_response + '</div></br>'
-                                },
-                                namespace='/test'
+                            remediation_response = remediation.build_remediation(
+                                query_location, 
+                                column_name, 
+                                search_string
                                 )
 
+                            query_items[satori_hostname + "::" + dbname].append(search_results[1])
 
+                        if db_type == 'MYSQL' and satori_username != '':
+                            search_results = mysql.search_for_email(
+                                satori_hostname, 
+                                PORT_MYSQL, 
+                                dbname, 
+                                satori_username, 
+                                satori_password, 
+                                sql_query)
+
+                            remediation_response = remediation.build_remediation(
+                                query_location, 
+                                column_name, 
+                                search_string
+                                )
+
+                            query_items[satori_hostname + "::" + dbname].append(search_results[1])
+                        
+                        if db_type == 'REDSHIFT' and satori_username != '':
+                            search_results = redshift.search_for_email(
+                                satori_hostname, 
+                                PORT_REDSHIFT, 
+                                dbname, 
+                                satori_username, 
+                                satori_password, 
+                                sql_query)
+
+                            remediation_response = remediation.build_remediation(
+                                query_location, 
+                                column_name, 
+                                search_string
+                                )
+
+                            query_items[satori_hostname + "::" + dbname].append(search_results[1])
+                        
+                        if db_type == 'MSSQL' and satori_username != '':
+                            search_results = mssql.search_for_email(
+                                satori_hostname,
+                                dbname,
+                                satori_username,
+                                satori_password,
+                                sql_query)
+                            
+                            remediation_response = remediation.build_remediation(
+                                query_location, 
+                                column_name, 
+                                search_string
+                                )
+                    
+                            query_items[satori_hostname + "::" + dbname].append(search_results[1])
+
+                        if db_type == 'ATHENA' and athena_results != '':
+                            search_results = athena.search_for_email(
+                                athena_results,
+                                athena_region,
+                                satori_hostname,
+                                dbname,
+                                satori_username,
+                                satori_password,
+                                sql_query)
+                            
+                            remediation_response = remediation.build_remediation(
+                                query_location, 
+                                column_name, 
+                                search_string
+                                )
+  
+                            query_items[satori_hostname + "::" + dbname].append(search_results[1])
+
+                        if db_type == 'COCKROACH_DB' and cockroachdb_username != '':
+                            search_results = cockroachdb.search_for_email(
+                                satori_hostname,
+                                PORT_COCKROACH,
+                                dbname,
+                                cockroachdb_cluster,
+                                cockroachdb_username, 
+                                cockroachdb_password, 
+                                sql_query)
+                            
+                            remediation_response = remediation.build_remediation(
+                                query_location, 
+                                column_name, 
+                                search_string
+                                )
+ 
+                            query_items[satori_hostname + "::" + dbname].append(search_results[1])
+
+                        if db_type == 'SNOWFLAKE' and snowflake_username != '':
+                            search_results = snowflake.search_for_email(
+                                satori_hostname,
+                                dbname,
+                                snowflake_account,
+                                snowflake_username,
+                                snowflake_password,
+                                sql_query
+                                )
+
+                            remediation_response = remediation.build_remediation(
+                                query_location, 
+                                column_name, 
+                                search_string
+                                )
+
+                            query_items[satori_hostname + "::" + dbname].append(search_results[1])
+
+                        socketio.emit('SatoriResults', 
+                                {'SearchResults': '<i>' + full_location + '</i></br><div class="resultsindent"><b>Results:</b></br>' + search_results[0] + '</br></br><b>Remediation:</b></br>' + remediation_response + '</div></br>'},
+                                namespace='/test')
 
     queries_formatted = ''
     for location, queries in query_items.items():
@@ -272,18 +257,12 @@ def async_get_datastores():
             queries_formatted += '<div class="resultsindent">' + str(item) + '</div>'
 
     socketio.emit('QueryInfo', 
-    {
-    'Queries': queries_formatted
-    },
-    namespace='/test'
-    )
+    {'Queries': queries_formatted},
+    namespace='/test')
 
     socketio.emit('Completion', 
-    {
-    'Complete': "Finished querying all Satori datastore <b>" + satori_tag + "</b> locations for value <b>" + search_string + "</b>"
-    },
-    namespace='/test'
-    )
+    {'Complete': "Finished querying all Satori datastore <b>" + satori_tag + "</b> locations for value <b>" + search_string + "</b>"},
+    namespace='/test')
 
 
 @app.route('/', methods=['GET'])
@@ -296,8 +275,6 @@ def test_connect():
     global thread
     print('Client connected')
 
-
-    #Start the random number generator thread only if the thread has not been started before.
     if not thread.is_alive():
         print("Starting Threads")
         thread_datastores = socketio.start_background_task(async_get_datastores)
@@ -310,5 +287,4 @@ if __name__ == '__main__':
 
     satori_tag = sys.argv[1]
     search_string = sys.argv[2] 
-
     socketio.run(app, host='127.0.0.1', port=8080)
