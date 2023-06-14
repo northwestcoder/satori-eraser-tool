@@ -2,31 +2,36 @@
 
 <img src="https://satoricyber.com/wp-content/uploads/LogoDark2.svg" />
 
-_A command line driven experience to search across all Satori datastores for any TAG with any SEARCH_STRING and generate a web report with the results_
+_A command-line -driven experience to search across all Satori datastores for any TAG with any SEARCH_STRING and generate a web report with the results_
 
 ### Supported Database Types
 
-- PostgreSQL (with Satori credentials)
-- MySQL (with Satori credentials)
-- MSSQL (with Satori credentials)
+- PostgreSQL
+- MySQL
+- MSSQL
 - Snowflake
-- Athena (with Satori credentials)
-- Redshift (with Satori credentials)
+- Athena
+- Redshift
 - CockroachDB 
 
 ### Installation
 
-- At a command prompt, download this repo, navigate to the new repo directory and then
-```pip install -r requirements.txt```
-- Fill out values in satori/satori.py
+_Due to several python libraries installed for various databases, we strongly recommend using a virtual python environment!_
+
+We tested using [pyenv on a mac](https://github.com/pyenv/pyenv#homebrew-in-macos) with python 3.11.0. 
+
+The rest of these installation steps assume you have a dedicated and clean (and hopefully virtual) python environment:
+
+- At a command prompt, download this repo, navigate to the new repo directory and then:
+```
+pip install -r requirements.txt
+```
+- Fill out values in [satori/satori.py](https://github.com/northwestcoder/satori-gdpr-async/blob/main/satori/satori.py)
 	- This solution requires a [Satori API service ID and Key](https://app.satoricyber.com/docs/api).
 	- If you are not using Snowflake, Athena, or CockroachDB, you can leave these lines alone.
 	- Satori [username and temp credentials](https://satoricyber.com/docs/data%20portal/#data-store-temporary-credentials) can be used for Athena, Postgres, MySQL, Redshift and MSSQL.
 	- Or, you can use original database username and password for these variables. 
 	- Snowflake and CockroachDB will require database username and password.
-
-_Due to several python libraries installed for various databases, we strongly recommend using a virtual python environment! E.g. "brew install pyenv" on MacOS._
-
 
 ### Usage
 
@@ -46,13 +51,13 @@ To start the tool, the syntax is like:
 
 Where:
 
-- TAGNAME is a valid [Satori Data Inventory](https://satoricyber.com/docs/inventory/) tag, e.g. SSN or EMAIL or CITY, etc.
-- SEARCH_STRING is the value you want to search for across all Satori Datastores
+- required: **TAGNAME** is a valid [Satori Data Inventory](https://satoricyber.com/docs/inventory/) tag, e.g. SSN, EMAIL, CITY, etc.
+- required: **SEARCH_STRING** is the value you want to search for across all Satori Datastores. Use quotes for a search string with spaces.
 
 The results are divided into two sections:
 
 1. We show each location for TAG, and any results from the database for that TAG where value = SEARCH_STRING.
-	- Note: This tool makes zero attempt at pretty-printing results retrieved from a database query!
+	- Note: This tool makes a simple attempt at pretty-printing with a new line for each row returned.
 2. We then list SQL select statements for each location for TAG.
 	- This is for a data engineer to perform additional research or exploration.
 
@@ -71,8 +76,3 @@ You can also use [Satori Custom Inventory](https://satoricyber.com/docs/inventor
 ```
 python app.py eec10645-6358-48eb-a5e3-6af917600b0a svega674@lewisramirezandstephenson.biz
 ```
-
-Sample output:
-
-![Example](example.png)
-

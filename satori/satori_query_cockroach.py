@@ -6,6 +6,8 @@ def search_for_email(cockroachdb_username, cockroachdb_password, cockroachdb_clu
 
 	try:
 
+		result = ''
+
 		DATABASE_URL="postgresql://{}:{}@{}:26257/{}.{}?sslmode=require".format(
 			cockroachdb_username,
 			cockroachdb_password,
@@ -19,7 +21,9 @@ def search_for_email(cockroachdb_username, cockroachdb_password, cockroachdb_clu
 		cur = conn.cursor()
 		cur.execute(str_sql)
 		rows = cur.fetchall()
-		return (str(rows), str_sql)
+		for row in rows:
+			result += str(row) + '</br>'
+		return (result, str_sql)
 	except Exception as err:
 		print(str(err))
 		return (str(err), str_sql)

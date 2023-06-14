@@ -142,7 +142,6 @@ def async_get_datastores():
                                     column_name)
 
                                 remediation_response = remediation.build_remediation(
-                                    search_results[0], 
                                     query_location, 
                                     column_name, 
                                     search_string
@@ -164,7 +163,6 @@ def async_get_datastores():
                                     column_name)
 
                                 remediation_response = remediation.build_remediation(
-                                    search_results[0], 
                                     query_location, 
                                     column_name, 
                                     search_string
@@ -184,7 +182,6 @@ def async_get_datastores():
                                     column_name)
 
                                 remediation_response = remediation.build_remediation(
-                                    search_results[0], 
                                     query_location, 
                                     column_name, 
                                     search_string
@@ -203,7 +200,6 @@ def async_get_datastores():
                                     column_name)
                                 
                                 remediation_response = remediation.build_remediation(
-                                    search_results[0], 
                                     query_location, 
                                     column_name, 
                                     search_string
@@ -224,7 +220,6 @@ def async_get_datastores():
                                     column_name)
                                 
                                 remediation_response = remediation.build_remediation(
-                                    search_results[0], 
                                     query_location, 
                                     column_name, 
                                     search_string
@@ -247,7 +242,6 @@ def async_get_datastores():
                                     column_name)
                                 
                                 remediation_response = remediation.build_remediation(
-                                    search_results[0], 
                                     query_location, 
                                     column_name, 
                                     search_string
@@ -269,7 +263,6 @@ def async_get_datastores():
                                     )
 
                                 remediation_response = remediation.build_remediation(
-                                    search_results[0], 
                                     query_location, 
                                     column_name, 
                                     search_string

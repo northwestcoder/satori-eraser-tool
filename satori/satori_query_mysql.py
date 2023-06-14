@@ -6,6 +6,7 @@ def search_for_email(host, port, database, location, user, password, email_to_fi
 
 	try:
 
+		result = ''
 		mysql_con = mysql.connector.connect(
 			user=user,
 			password=password,
@@ -17,8 +18,10 @@ def search_for_email(host, port, database, location, user, password, email_to_fi
 
 		mycursor.execute(str_sql)
 
-		myresult = mycursor.fetchall()
-		return (str(myresult), str_sql)
+		rows = mycursor.fetchall()
+		for row in rows:
+			result += str(row) + '</br>'
+		return (result, str_sql)
 
 	except Exception as err:
 		print(err)

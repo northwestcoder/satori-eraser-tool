@@ -3,6 +3,7 @@ import psycopg2
 def search_for_email(host, port, database, location, user, password, email_to_find, colname):
 
 	str_sql = "SELECT * from {} where {} = '{}';".format(location, colname, email_to_find)
+	result = ''
 
 	try:
 		connector: psycopg2.connection = psycopg2.connect(
@@ -23,11 +24,12 @@ def search_for_email(host, port, database, location, user, password, email_to_fi
 	
 	try:
 		rows = cur.fetchall()
+		for row in rows:
+			result += str(row) + '</br>'
 	except Exception as err:
 		print(err)
 		connector.rollback()
 		return (str(err), str_sql)
 	else:
 		connector.commit()
-		return (str(rows), str_sql)
-
+		return (result, str_sql)
