@@ -261,7 +261,7 @@ def async_get_datastores():
     namespace='/test')
 
     socketio.emit('Completion', 
-    {'Complete': "Finished querying all Satori datastore <b>" + satori_tag + "</b> locations for value <b>" + search_string + "</b>"},
+    {'Complete': "Finished querying all Satori Datastore <b>" + satori_tag + "</b> locations for value <b>" + search_string + "</b>"},
     namespace='/test')
 
 
