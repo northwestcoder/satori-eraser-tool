@@ -1,6 +1,6 @@
 import psycopg2
 
-def search_for_email(host, port, database, cluster, username, password, sql_query):
+def search_for_email(host, port, database, cockroachdb_cluster, cockroachdb_username, cockroachdb_password, sql_query):
 
 	try:
 

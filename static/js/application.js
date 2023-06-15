@@ -5,7 +5,7 @@ $(document).ready(function(){
     var info_received = [];
  
     var queries = [];
-    var completion = [];
+    var completion = '';
 
     //receive data from server
     socket.on('SatoriResults', function(msg) {
@@ -35,13 +35,8 @@ $(document).ready(function(){
     //receive data from server
     socket.on('Completion', function(msg) {
     console.log("Received Completion " + msg.Complete);  
-
-    completion.push(msg.Complete)
-    completion_string = '';
-    for (var i = 0; i < completion.length; i++){
-        completion_string = completion_string + '<p>' + completion[i] + '</p>';
-    }
-        $('#completion').html(completion_string);
+    completion = msg.Complete;
+    $('#completion').html(completion);
     });
 
 

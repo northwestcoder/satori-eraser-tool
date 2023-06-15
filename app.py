@@ -37,26 +37,14 @@ thread_stop_event = Event()
 search_string = ''
 satori_tag = ''
 
-satori_account_id = satori.satori_account_id 
-satori_serviceaccount_id = satori. satori_serviceaccount_id 
-satori_serviceaccount_key = satori.satori_serviceaccount_key
-apihost = satori.apihost
-print("using api server: " + apihost)
-satori_username = satori.satori_username
-satori_password = satori.satori_password
-snowflake_username = satori.snowflake_username
-snowflake_password = satori.snowflake_password
-snowflake_account = satori.snowflake_account
-cockroachdb_username = satori.cockroachdb_username
-cockroachdb_password = satori.cockroachdb_password
-cockroachdb_cluster = satori.cockroachdb_cluster
-athena_results = satori.athena_results
-athena_region = satori.athena_region
 
 def async_get_datastores():
 
     query_items = defaultdict(list)
-    satori_token = satori_common.satori_auth(satori_serviceaccount_id, satori_serviceaccount_key, apihost)
+    satori_token = satori_common.satori_auth(
+        satori.satori_serviceaccount_id, 
+        satori.satori_serviceaccount_key, 
+        satori.apihost)
 
     auth_headers = {
     'Authorization': 'Bearer {}'.format(satori_token), 
@@ -65,8 +53,14 @@ def async_get_datastores():
 
     found_datastores = datastores.get_all_datastores(
         auth_headers, 
-        apihost, 
-        satori_account_id)
+        satori.apihost, 
+        satori.satori_account_id)
+
+
+    socketio.emit('Completion', 
+    {'Complete': '<font color="red">Querying all Satori Datastores, please wait..</font>'},
+    namespace='/test')
+
 
     for ds_entry in found_datastores[1]:
 
@@ -81,8 +75,8 @@ def async_get_datastores():
             namespace='/test')
 
         found_locations = locations.get_locations_by_datastore(auth_headers, 
-                                                               apihost, 
-                                                               satori_account_id, 
+                                                               satori.apihost, 
+                                                               satori.satori_account_id , 
                                                                datastore_id)
 
         print("\nSearching " + str(found_locations[0]) + " locations for datastore " + satori_hostname + " (" + db_type + ")")
@@ -125,13 +119,13 @@ def async_get_datastores():
 
                         # BEGIN MAIN DB CLIENT WORK
 
-                        if db_type == 'POSTGRESQL' and satori_username != '':
+                        if db_type == 'POSTGRESQL' and satori.satori_username != '':
                             search_results = postgres.search_for_email(
                                 satori_hostname, 
                                 PORT_POSTGRES, 
                                 dbname, 
-                                satori_username, 
-                                satori_password, 
+                                satori.satori_username, 
+                                satori.satori_password, 
                                 sql_query)
 
                             remediation_response = remediation.build_remediation(
@@ -142,13 +136,13 @@ def async_get_datastores():
 
                             query_items[satori_hostname + "::" + dbname].append(search_results[1])
 
-                        if db_type == 'MYSQL' and satori_username != '':
+                        if db_type == 'MYSQL' and satori.satori_username != '':
                             search_results = mysql.search_for_email(
                                 satori_hostname, 
                                 PORT_MYSQL, 
                                 dbname, 
-                                satori_username, 
-                                satori_password, 
+                                satori.satori_username, 
+                                satori.satori_password, 
                                 sql_query)
 
                             remediation_response = remediation.build_remediation(
@@ -159,13 +153,13 @@ def async_get_datastores():
 
                             query_items[satori_hostname + "::" + dbname].append(search_results[1])
                         
-                        if db_type == 'REDSHIFT' and satori_username != '':
+                        if db_type == 'REDSHIFT' and satori.satori_username != '':
                             search_results = redshift.search_for_email(
                                 satori_hostname, 
                                 PORT_REDSHIFT, 
                                 dbname, 
-                                satori_username, 
-                                satori_password, 
+                                satori.satori_username, 
+                                satori.satori_password, 
                                 sql_query)
 
                             remediation_response = remediation.build_remediation(
@@ -176,12 +170,12 @@ def async_get_datastores():
 
                             query_items[satori_hostname + "::" + dbname].append(search_results[1])
                         
-                        if db_type == 'MSSQL' and satori_username != '':
+                        if db_type == 'MSSQL' and satori.satori_username != '':
                             search_results = mssql.search_for_email(
                                 satori_hostname,
                                 dbname,
-                                satori_username,
-                                satori_password,
+                                satori.satori_username,
+                                satori.satori_password,
                                 sql_query)
                             
                             remediation_response = remediation.build_remediation(
@@ -192,14 +186,14 @@ def async_get_datastores():
                     
                             query_items[satori_hostname + "::" + dbname].append(search_results[1])
 
-                        if db_type == 'ATHENA' and athena_results != '':
+                        if db_type == 'ATHENA' and satori.athena_results != '':
                             search_results = athena.search_for_email(
-                                athena_results,
-                                athena_region,
+                                satori.athena_results,
+                                satori.athena_region,
                                 satori_hostname,
                                 dbname,
-                                satori_username,
-                                satori_password,
+                                satori.satori_username,
+                                satori.satori_password,
                                 sql_query)
                             
                             remediation_response = remediation.build_remediation(
@@ -210,14 +204,14 @@ def async_get_datastores():
   
                             query_items[satori_hostname + "::" + dbname].append(search_results[1])
 
-                        if db_type == 'COCKROACH_DB' and cockroachdb_username != '':
+                        if db_type == 'COCKROACH_DB' and satori.cockroachdb_username != '':
                             search_results = cockroachdb.search_for_email(
                                 satori_hostname,
                                 PORT_COCKROACH,
                                 dbname,
-                                cockroachdb_cluster,
-                                cockroachdb_username, 
-                                cockroachdb_password, 
+                                satori.cockroachdb_cluster,
+                                satori.cockroachdb_username, 
+                                satori.cockroachdb_password, 
                                 sql_query)
                             
                             remediation_response = remediation.build_remediation(
@@ -228,13 +222,13 @@ def async_get_datastores():
  
                             query_items[satori_hostname + "::" + dbname].append(search_results[1])
 
-                        if db_type == 'SNOWFLAKE' and snowflake_username != '':
+                        if db_type == 'SNOWFLAKE' and satori.snowflake_username != '':
                             search_results = snowflake.search_for_email(
                                 satori_hostname,
                                 dbname,
-                                snowflake_account,
-                                snowflake_username,
-                                snowflake_password,
+                                satori.snowflake_account,
+                                satori.snowflake_username,
+                                satori.snowflake_password,
                                 sql_query
                                 )
 
@@ -246,15 +240,17 @@ def async_get_datastores():
 
                             query_items[satori_hostname + "::" + dbname].append(search_results[1])
 
-                        socketio.emit('SatoriResults', 
+                        if search_results[0] != '':
+                            socketio.emit('SatoriResults', 
                                 {'SearchResults': '<i>' + full_location + '</i></br><div class="resultsindent"><b>Results:</b></br>' + search_results[0] + '</br></br><b>Remediation:</b></br>' + remediation_response + '</div></br>'},
                                 namespace='/test')
 
     queries_formatted = ''
     for location, queries in query_items.items():
-        queries_formatted += '</br><b>' + location.split("::")[0] + '</b></br>'
+        queries_formatted += '</br><b>' + location.split("::")[0] + '</b></br><div class="queries">'
         for item in queries:
-            queries_formatted += '<div class="resultsindent">' + str(item) + '</div>'
+            queries_formatted += '' + str(item) + '</br>'
+        queries_formatted += '</div>'
 
     socketio.emit('QueryInfo', 
     {'Queries': queries_formatted},
