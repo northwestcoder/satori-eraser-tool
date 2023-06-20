@@ -18,3 +18,10 @@ cockroachdb_cluster = ""
 
 athena_results = "s3://YOUR_RESULTS_BUCKET"
 athena_region = "YOUR_ATHENA_REGION"
+
+# change your ports as needed. Snowflake and Athena do not require ports
+
+PORT_POSTGRES = "5432"
+PORT_REDSHIFT = "5439"
+PORT_COCKROACH = "26257"
+PORT_MYSQL = "12343"
