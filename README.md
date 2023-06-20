@@ -48,6 +48,7 @@ pip install -r requirements.txt
 	- Satori [username and temp credentials](https://satoricyber.com/docs/data%20portal/#data-store-temporary-credentials) can be used for Athena, Postgres, MySQL, Redshift and MSSQL.
 	- Or, you can use original database username and password for these variables. 
 	- Snowflake and CockroachDB will require database username and password.
+	- Also take note of the **database ports** and chance these if necessary.
 
 ### Usage
 

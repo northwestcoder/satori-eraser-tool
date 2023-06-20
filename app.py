@@ -19,12 +19,6 @@ from satori import satori_query_cockroach as cockroachdb
 from satori import satori_query_redshift as redshift
 from satori import satori_query_snowflake as snowflake
 
-# change your ports as needed. Snowflake and Athena do not require ports
-PORT_POSTGRES = "5432"
-PORT_REDSHIFT = "5439"
-PORT_COCKROACH = "26257"
-PORT_MYSQL = "12343"
-
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
@@ -122,7 +116,7 @@ def async_get_datastores():
                         if db_type == 'POSTGRESQL' and satori.satori_username != '':
                             search_results = postgres.search_for_email(
                                 satori_hostname, 
-                                PORT_POSTGRES, 
+                                satori.PORT_POSTGRES, 
                                 dbname, 
                                 satori.satori_username, 
                                 satori.satori_password, 
@@ -139,7 +133,7 @@ def async_get_datastores():
                         if db_type == 'MYSQL' and satori.satori_username != '':
                             search_results = mysql.search_for_email(
                                 satori_hostname, 
-                                PORT_MYSQL, 
+                                satori.PORT_MYSQL, 
                                 dbname, 
                                 satori.satori_username, 
                                 satori.satori_password, 
@@ -156,7 +150,7 @@ def async_get_datastores():
                         if db_type == 'REDSHIFT' and satori.satori_username != '':
                             search_results = redshift.search_for_email(
                                 satori_hostname, 
-                                PORT_REDSHIFT, 
+                                satori.PORT_REDSHIFT, 
                                 dbname, 
                                 satori.satori_username, 
                                 satori.satori_password, 
@@ -207,7 +201,7 @@ def async_get_datastores():
                         if db_type == 'COCKROACH_DB' and satori.cockroachdb_username != '':
                             search_results = cockroachdb.search_for_email(
                                 satori_hostname,
-                                PORT_COCKROACH,
+                                satori.PORT_COCKROACH,
                                 dbname,
                                 satori.cockroachdb_cluster,
                                 satori.cockroachdb_username, 
