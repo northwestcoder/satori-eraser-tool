@@ -1,6 +1,6 @@
 import snowflake.connector
 
-def search_for_email(host, database, snowflake_account, snowflake_username, snowflake_password, sql_query):
+def search_for_email(host, database, snowflake_account, snowflake_username, snowflake_password, snowflake_warehouse, sql_query):
 	
 	try:
 		result = ''
@@ -10,6 +10,7 @@ def search_for_email(host, database, snowflake_account, snowflake_username, snow
 			password= snowflake_password,
 			user=snowflake_username,
 			host=host,
+			warehouse=snowflake_warehouse,
 			database=database
 			)
 		

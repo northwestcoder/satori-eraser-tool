@@ -11,6 +11,7 @@ satori_password = ""
 snowflake_username = ""
 snowflake_password = ""
 snowflake_account = "YOUR_ACCOUNT.YOUR_REGION"
+snowflake_warehouse = ""
 
 cockroachdb_username = ""
 cockroachdb_password = ""

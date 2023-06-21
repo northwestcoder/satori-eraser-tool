@@ -223,6 +223,7 @@ def async_get_datastores():
                                 satori.snowflake_account,
                                 satori.snowflake_username,
                                 satori.snowflake_password,
+                                satori.snowflake_warehouse,
                                 sql_query
                                 )
 
@@ -275,6 +276,6 @@ def test_disconnect():
 
 if __name__ == '__main__':
 
-    satori_tag = sys.argv[1]
+    satori_tag = str(sys.argv[1]).upper()
     search_string = sys.argv[2] 
     socketio.run(app, host='127.0.0.1', port=8080)

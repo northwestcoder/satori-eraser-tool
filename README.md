@@ -47,8 +47,8 @@ pip install -r requirements.txt
 	- If you are not using Snowflake, Athena, or CockroachDB, you can leave these lines alone.
 	- Satori [username and temp credentials](https://satoricyber.com/docs/data%20portal/#data-store-temporary-credentials) can be used for Athena, Postgres, MySQL, Redshift and MSSQL.
 	- Or, you can use original database username and password for these variables. 
-	- Snowflake and CockroachDB will require database username and password.
-	- Also take note of the **database ports** and chance these if necessary.
+	- Snowflake and CockroachDB will require database username and password. Snowflake will require a selected WAREHOUSE.
+	- Also take note of the **database ports** and change these if necessary.
 
 ### Usage
 
@@ -106,3 +106,8 @@ If you do not want to use a particular database, or, you only use one of the dat
 And then
 - simply remove the IF statements for databases that you do not need.
 - remove references to the python libraries for these databases.
+
+### More info on the Satori run-as username and password
+
+We recommend creating a Satori group called "GDPR/CCPA Admins" and adding one or more users to this group, and then allowing this group to query all known datastores, optionally bypassing masking and row level security. This is a business decision and not specific to this github project.
+
