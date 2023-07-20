@@ -11,7 +11,7 @@ _A command-line -driven experience to search across all Satori datastores for an
 If you combine the following concepts, the result is a tool for querying multiple locations across multiple datastores, searching for a specific value for a Satori tag.
 
 1. Satori has all of your [Datastores](https://satoricyber.com/docs/datastores/data-stores-overview/) defined.
-2. Satori provides a temp [username and password](https://satoricyber.com/docs/data%20portal/#data-store-temporary-credentials) for most datastores (except Snowflake and CockroachDB for which we provide input fields if needed).
+2. Satori provides a temp [username and password](https://satoricyber.com/docs/data%20portal/#data-store-temporary-credentials) for your datastores.
 3. Satori has all of your sensitive columns tagged using [Satori Data Inventory](https://satoricyber.com/docs/inventory/) features.
 4. Satori includes a [Rest API](https://app.satoricyber.com/docs/api) for finding and operating upon datastores and locations. You need a service account and service key to use the Rest API.
 
